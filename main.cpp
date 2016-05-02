@@ -2,6 +2,7 @@
 #include "NeuralNetwork.h"
 
 #include <vector>
+#include <iomanip>
 
 using namespace std;
 
@@ -21,12 +22,13 @@ int main()
 
 	vector<double> input(1);
 	input[0] = 10;
+	cout << fixed;
 
 	for (int i = 0; i < 10; i++)
 	{
-		cout << myNet.forwardProp(input) << endl;
+		cout <<setprecision(5)<< myNet.forwardProp(input) << endl;
 		myNet.backwardProp(10, new squareError);
-		myNet.updateWeights(0.1, 0.03);
+		myNet.updateWeights(0.1, 0);
 	}
 	
 	
