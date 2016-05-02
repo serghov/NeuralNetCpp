@@ -17,23 +17,19 @@ int main()
 
 	
 
-	NeuralNetwork myNet(shape,new linear,new linear,new L1, inputNames);//make static vars for math functions
+	NeuralNetwork myNet(shape,new sigmoid,new sigmoid,new L1, inputNames);//make static vars for math functions
 
 	vector<double> input(1);
 	input[0] = 10;
 
-	cout << myNet.forwardProp(input) << endl;
-	myNet.backwardProp(10, new squareError);
-
-	for (int i = 0; i < myNet.network.size(); i++)
+	for (int i = 0; i < 10; i++)
 	{
-		for (int j = 0; j < myNet.network[i].size(); j++)
-		{
-			cout << myNet.network[i][j].outputDer << " ";
-		}
-		cout << endl;
+		cout << myNet.forwardProp(input) << endl;
+		myNet.backwardProp(10, new squareError);
+		myNet.updateWeights(0.1, 0.03);
 	}
-
+	
+	
 	int t;
 	cin >> t;
 	
