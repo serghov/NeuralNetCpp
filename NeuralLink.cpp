@@ -1,7 +1,7 @@
 #include "NeuralLink.h"
 
 
-NeuralLink::NeuralLink(Neuron* source, Neuron* dest, mathFunction regularization)
+NeuralLink::NeuralLink(Neuron* source, Neuron* dest, mathFunction* regularization)
 {
 	this->name = source->name + " - " + dest->name;
 	random_device rd;

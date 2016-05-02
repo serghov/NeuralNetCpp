@@ -5,7 +5,7 @@ Neuron::Neuron()
 	this->name = "noname";	
 }
 
-Neuron::Neuron(string name, mathFunction activation)
+Neuron::Neuron(string name, mathFunction* activation)
 {
 	this->name = name;
 	this->activation = activation;
@@ -27,7 +27,7 @@ double Neuron::update()
 	{
 		this->totalInput += inputs[i]->weight * inputs[i]->source->output;
 	}
-	this->output = this->activation.f(this->totalInput);
+	this->output = this->activation->f(this->totalInput);
 	return this->output;
 }
 

@@ -17,9 +17,9 @@ public:
 
 	double accInputDer = 0; int numAccInputDer = 0;
 
-	mathFunction activation;
+	mathFunction* activation;
 	Neuron();
-	Neuron(string name, mathFunction activation);
+	Neuron(string name, mathFunction* activation);
 	~Neuron();
 
 	double update();	

@@ -1,6 +1,6 @@
 #include "NeuralNetwork.h"
 
-NeuralNetwork::NeuralNetwork(vector<int> shape, mathFunction activation, mathFunction outputActivation, mathFunction regularization, vector<string> inputNames)
+NeuralNetwork::NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, vector<string> inputNames)
 {
 	this->network = vector<vector<Neuron> >(shape.size());
 
@@ -54,16 +54,16 @@ double NeuralNetwork::forwardProp(vector<double> &inputs)
 	return this->network[this->network.size() - 1][0].output;
 }
 
-void NeuralNetwork::backwardProp(double target, mathFunction errorFunction)
+void NeuralNetwork::backwardProp(double target, mathFunction* errorFunction)
 {
 	int i, j;
-	this->network[this->network.size() - 1][0].outputDer = errorFunction.dfdx(this->network[this->network.size() - 1][0].output, target);
+	this->network[this->network.size() - 1][0].outputDer = errorFunction->dfdx(this->network[this->network.size() - 1][0].output, target);
 
 	for (i = this->network.size() - 1; i > 0; i--)
 	{
 		for (j = 0; j < this->network[i].size(); j++)
 		{
-			this->network[i][j].inputDer = this->network[i][j].outputDer * this->network[i][j].activation.dfdx(this->network[i][j].totalInput);
+			this->network[i][j].inputDer = this->network[i][j].outputDer * this->network[i][j].activation->dfdx(this->network[i][j].totalInput);
 			this->network[i][j].accInputDer += this->network[i][j].inputDer;
 			this->network[i][j].numAccInputDer++;
 		}

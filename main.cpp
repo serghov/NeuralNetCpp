@@ -17,13 +17,13 @@ int main()
 
 	
 
-	NeuralNetwork myNet(shape, linear(), linear(), L1(), inputNames);
+	NeuralNetwork myNet(shape,new linear,new linear,new L1, inputNames);//make static vars for math functions
 
 	vector<double> input(1);
 	input[0] = 10;
 
 	cout << myNet.forwardProp(input) << endl;
-	myNet.backwardProp(10, squareError());
+	myNet.backwardProp(10, new squareError);
 
 	for (int i = 0; i < myNet.network.size(); i++)
 	{

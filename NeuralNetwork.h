@@ -15,7 +15,7 @@ class NeuralNetwork {
 public:
 	vector<vector<Neuron> > network;
 
-	NeuralNetwork(vector<int> shape, mathFunction activation, mathFunction outputActivation, mathFunction regularization, vector<string> inputNames);
+	NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, vector<string> inputNames);
 	double forwardProp(vector<double> &inputs);
-	void backwardProp(double target, mathFunction errorFunction);
+	void backwardProp(double target, mathFunction* errorFunction);
 };

@@ -16,8 +16,8 @@ public:
 	double weight;//random of some sorts
 
 	double errorDer = 0, accErrorDer = 0; int numAccError = 0;
-	mathFunction regularization;
+	mathFunction* regularization;
 
-	NeuralLink(Neuron* source, Neuron* dest, mathFunction regularization);
+	NeuralLink(Neuron* source, Neuron* dest, mathFunction* regularization);
 
 };
