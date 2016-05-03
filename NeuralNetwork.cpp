@@ -63,9 +63,11 @@ void NeuralNetwork::backwardProp(double target, mathFunction* errorFunction)
 	{
 		for (j = 0; j < this->network[i].size(); j++)
 		{
-			this->network[i][j].inputDer = this->network[i][j].outputDer * this->network[i][j].activation->dfdx(this->network[i][j].totalInput);
-			this->network[i][j].accInputDer += this->network[i][j].inputDer;
-			this->network[i][j].numAccInputDer++;
+			Neuron* neuron = &this->network[i][j];
+
+			neuron->inputDer = neuron->outputDer * neuron->activation->dfdx(neuron->totalInput);
+			neuron->accInputDer += neuron->inputDer;
+			neuron->numAccInputDer++;
 		}
 
 		for (j = 0; j < this->network[i].size(); j++)
@@ -73,9 +75,10 @@ void NeuralNetwork::backwardProp(double target, mathFunction* errorFunction)
 			Neuron* neuron = &this->network[i][j];
 			for (int g = 0; g < neuron->inputs.size(); g++)
 			{
-				neuron->inputs[g]->errorDer = neuron->inputDer * neuron->inputs[g]->source->output;
-				neuron->inputs[g]->accErrorDer += neuron->inputs[g]->errorDer;
-				neuron->inputs[g]->numAccError++;
+				NeuralLink *neuralLink = neuron->inputs[g];
+				neuralLink->errorDer = neuron->inputDer * neuralLink->source->output;
+				neuralLink->accErrorDer += neuralLink->errorDer;
+				neuralLink->numAccError++;
 			}
 		}
 		if (i == 1)
@@ -103,7 +106,7 @@ void NeuralNetwork::updateWeights(double learningRate, double regularizationRate
 			Neuron* neuron = &this->network[i][j];
 			if (neuron->numAccInputDer > 0)
 			{
-				neuron->bias -= learningRate * neuron->accInputDer / neuron->numAccInputDer;
+				neuron->bias -= learningRate * neuron->accInputDer / (neuron->numAccInputDer + 0.0);
 				neuron->accInputDer = 0;
 				neuron->numAccInputDer = 0;
 			}
@@ -114,7 +117,7 @@ void NeuralNetwork::updateWeights(double learningRate, double regularizationRate
 				double regulDer = neuralLink->regularization->dfdx(neuralLink->weight);
 				if (neuralLink->numAccError > 0)
 				{
-					neuralLink->weight -= learningRate * neuralLink->accErrorDer + regularizationRate * regulDer / neuralLink->numAccError;
+					neuralLink->weight -= learningRate * (neuralLink->accErrorDer + regularizationRate * regulDer) / (neuralLink->numAccError + 0.0);
 					neuralLink->accErrorDer = 0;
 					neuralLink->numAccError = 0;
 				}
