@@ -7,5 +7,5 @@ double squareError::f(double x, double y)
 
 double squareError::dfdx(double x, double y)
 {
-	return y - x;
+	return x - y;
 }
