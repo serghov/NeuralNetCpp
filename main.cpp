@@ -47,9 +47,6 @@ int main()
 		
 		cout << "------------" << endl;
 
-		
-		
-
 		myNet.updateWeights(0.1, 0);
 		
 	}
