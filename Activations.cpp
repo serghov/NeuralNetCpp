@@ -1,15 +1,15 @@
 #include "Activations.h"
-
+#include <limits>
 double tanh::f(double x)
 {
 	if (x == std::numeric_limits<double>::max())
 		return 1;
-	
+
 	if (x == std::numeric_limits<double>::min())
 		return -1;
-	
+
 	double e2x = exp(2.0 * x);
-	return (e2x - 1.0) / (e2x + 1.0);	
+	return (e2x - 1.0) / (e2x + 1.0);
 }
 double tanh::dfdx(double x)
 {
