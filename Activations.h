@@ -1,5 +1,6 @@
 #pragma once
 #include "mathFunction.h"
+#include <limits>
 
 class tanh : public mathFunction {
 public:

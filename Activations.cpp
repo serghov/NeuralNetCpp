@@ -1,5 +1,5 @@
 #include "Activations.h"
-#include <limits>
+
 double tanh::f(double x)
 {
 	if (x == std::numeric_limits<double>::max())
