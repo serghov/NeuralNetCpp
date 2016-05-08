@@ -1,6 +1,6 @@
 #include "Activations.h"
 
-double tanh::f(double x)
+double Tanh::f(double x)
 {
 	if (x == std::numeric_limits<double>::max())
 		return 1;
@@ -11,9 +11,9 @@ double tanh::f(double x)
 	double e2x = exp(2.0 * x);
 	return (e2x - 1.0) / (e2x + 1.0);
 }
-double tanh::dfdx(double x)
+double Tanh::dfdx(double x)
 {
-	double f = tanh::f(x);
+	double f = Tanh::f(x);
 	return 1 - f * f;
 }
 

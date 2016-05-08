@@ -2,7 +2,7 @@
 #include "mathFunction.h"
 #include <limits>
 
-class tanh : public mathFunction {
+class Tanh : public mathFunction {
 public:
 	virtual double f(double x);
 	virtual double dfdx(double x);
