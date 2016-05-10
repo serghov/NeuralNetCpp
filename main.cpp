@@ -37,10 +37,12 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 
 int main()
 {
-	vector<int> shape(3);
+	vector<int> shape(4);
 	shape[0] = 1;
-	shape[1] = 20;
-	shape[2] = 1;
+	shape[1] = 5;
+	shape[2] = 4;
+	shape[3] = 1;
+	
 
 
 
@@ -56,29 +58,25 @@ int main()
 	uniform_real_distribution<> rand01(-0.1, 0.1);
 	uniform_real_distribution<> rand001(-0.01, 0.01);
 
+	mathFunction *SQUARE = new squareError;
 
-	for (int i = 0; i < 10000; i++)
+	for (int i = 0; i < 1500000; i++)
 	{
 		for (int j = 0; j < 50; j++)
 		{
-			myNet.forwardProp(vector<double>{0.5 + rand01(gen)});			
-			myNet.backwardProp(1, new squareError);
+			myNet.forwardProp(vector<double>{j / 50.0});
+			myNet.backwardProp(0.5 + 0.5 * cos(j / 50.0 * 3.1415 * 8.0), SQUARE);
 		}
 		
-		for (int j = 0; j < 50; j++)
-		{
-			myNet.forwardProp(vector<double>{0 + rand01(gen)});
-			myNet.backwardProp(0, new squareError);
-		}
-
 		if (i % 1000 == 0)
 		{
 			cout << "Epoch: " << i << endl;
 			plotSingleVarNet(myNet, 0, 1);
-			cout << endl << endl;
+			cout << endl;
 		}
+		
 
-		myNet.updateWeights(0.1, 0);
+		myNet.updateWeights(1, 0);
 		
 	}
 	
