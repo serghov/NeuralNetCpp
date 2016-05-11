@@ -9,3 +9,15 @@ double squareError::dfdx(double x, double y)
 {
 	return x - y;
 }
+
+double logMin::f(int target, int current, double x)
+{
+	//TODO
+}
+
+double logMin::dfdx(int target, int current, double x)
+{
+	if (target == current)
+		return -1.0 / x;
+	return 0;
+}

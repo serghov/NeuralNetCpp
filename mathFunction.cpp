@@ -19,3 +19,13 @@ double mathFunction::dfdx(double x, double y)
 {
 	return 1;
 }
+
+double mathFunction::f(int target, int current, double x)
+{
+	return x;
+}
+
+double mathFunction::dfdx(int target, int current, double x)
+{
+	return 1;
+}
