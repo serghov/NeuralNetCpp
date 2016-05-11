@@ -12,9 +12,9 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 	vector<double> res(60);
 	for (i = 0; i < 60; i++)
 	{
-		res[i] = myNet.forwardProp(vector<double>{ (i+0.0) / (rangeEnd - rangeStart) / 60.0 + rangeStart});	
+		res[i] = myNet.forwardProp(vector<double>{ (i + 0.0) / (rangeEnd - rangeStart) / 60.0 + rangeStart});
 	}
-	
+
 	for (i = 0; i < 60; i++)
 		cout << "_";
 	cout << endl;
@@ -27,7 +27,7 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 			else
 				cout << " ";
 		}
-		cout <<"| "<<(10-i)/10.0 *(rangeEnd - rangeStart) + rangeStart << endl;
+		cout << "| " << (10 - i) / 10.0 *(rangeEnd - rangeStart) + rangeStart << endl;
 	}
 	for (i = 0; i < 60; i++)
 		cout << "_";
@@ -40,7 +40,7 @@ int main()
 	vector<int> shape(6);
 	shape[0] = 1;
 	shape[1] = 10;
-	shape[2] = 10;	
+	shape[2] = 10;
 	shape[3] = 10;
 	shape[4] = 10;
 	shape[5] = 1;
@@ -49,7 +49,7 @@ int main()
 	vector<string> inputNames(1);
 	inputNames[0] = "uxt";
 
-	NeuralNetwork myNet(shape,new Tanh,new Tanh,new L1, inputNames);//make static vars for math functions //and a namespace
+	NeuralNetwork myNet(shape, new Tanh, new Tanh, new L1, inputNames);//make static vars for math functions //and a namespace
 
 	cout << fixed << setprecision(5);
 
@@ -79,17 +79,17 @@ int main()
 			cout << "Epoch: " << i << endl;
 			plotSingleVarNet(myNet, 0, 1);
 		}
-		
+
 
 		myNet.updateWeights(0.1, 0);
 	}
-	
+
 	plotSingleVarNet(myNet, 0, 1);
 
 
 	int t;
 	cin >> t;
-	
+
 
 	return 0;
 }
