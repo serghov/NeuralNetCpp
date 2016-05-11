@@ -2,26 +2,19 @@
 
 NeuralNetwork::NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, vector<string> inputNames)
 {
-	this->network = vector<vector<Neuron> >(shape.size());
+	this->network = vector<NeuralLayer>(shape.size());
 
 	int k = 0;
 
 	for (int i = 0; i < shape.size(); i++)
 	{
-		this->network[i] = vector<Neuron>(shape[i]);
+		if (i == shape.size()-1)
+			this->network[i] = NeuralLayer(shape[i], outputActivation);
+		else
+			this->network[i] = NeuralLayer(shape[i], activation);
+
 		for (int j = 0; j < this->network[i].size(); j++)
 		{
-			string name;
-			if (i == 0)
-				name = inputNames[j];
-			else
-				name = std::to_string(k++);
-
-			if (i == shape.size() - 1)			
-				this->network[i][j] = Neuron(name, outputActivation);
-			else
-				this->network[i][j] = Neuron(name, activation);
-
 			if (i)
 			{
 				for (int g = 0; g < this->network[i - 1].size(); g++)
@@ -44,13 +37,8 @@ double NeuralNetwork::forwardProp(vector<double> &inputs)
 		this->network[0][i].output = inputs[i];
 
 	for (i = 1; i < this->network.size(); i++)
-	{
-		for (int j = 0; j < this->network[i].size(); j++)
-		{
-			this->network[i][j].update();
-		}
-	}
-	
+		this->network[i].update();
+
 	return this->network[this->network.size() - 1][0].output;
 }
 

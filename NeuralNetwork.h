@@ -7,13 +7,14 @@
 #include "Neuron.h"
 #include "NeuralLink.h"
 
+#include "NeuralLayer.h"
 #include <vector>
 #include <iostream>
 using namespace std;
 
 class NeuralNetwork {
 public:
-	vector<vector<Neuron> > network;
+	vector<NeuralLayer> network;
 
 	NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, vector<string> inputNames);
 	double forwardProp(vector<double> &inputs);

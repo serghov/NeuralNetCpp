@@ -114,6 +114,7 @@
     <ClCompile Include="ErrorFunctions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mathFunction.cpp" />
+    <ClCompile Include="NeuralLayer.cpp" />
     <ClCompile Include="NeuralLink.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="Neuron.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="Activations.h" />
     <ClInclude Include="ErrorFunctions.h" />
     <ClInclude Include="mathFunction.h" />
+    <ClInclude Include="NeuralLayer.h" />
     <ClInclude Include="NeuralLink.h" />
     <ClInclude Include="NeuralNetwork.h" />
     <ClInclude Include="Neuron.h" />
