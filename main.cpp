@@ -1,9 +1,13 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include "NeuralNetwork.h"
 
 #include <vector>
 #include <iomanip>
 
+#include <cv.h>
+#include <highgui.h>
 
 
 void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
@@ -34,22 +38,39 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 	cout << endl;
 }
 
+void net2Mat(NeuralNetwork &myNet, cv::Mat &mat)
+{
+	int x, y;
+	for (int x = 0; x < mat.cols; x++)
+	{
+		for (int y = 0; y < mat.rows; y++)
+		{
+			int tmp = 255 * myNet.forwardProp(vector<double>{x / (mat.cols / 0.5) - 1.0, y / (mat.rows / 0.5) - 1.0});
+			cv::circle(mat, cv::Point(x, y), 1, cv::Scalar(tmp, tmp, tmp));
+		}
+	}
+}
 
 int main()
 {
-	vector<int> shape(4);
-	shape[0] = 1;
-	shape[1] = 5;
-	shape[2] = 4;
-	shape[3] = 1;
+	vector<int> shape(7);
+	shape[0] = 2;
+	shape[1] = 30;	
+	shape[2] = 10;
+	shape[3] = 10;
+	shape[4] = 10;
+	shape[5] = 10;
+	shape[6] = 1;
+
 	
+	cv::Mat inputImage = cv::imread("D:\\skhachat.png");
+	cv::Mat outputImage = inputImage.clone();
 
+	vector<string> inputNames(2);
+	inputNames[0] = "x";
+	inputNames[1] = "y";
 
-
-	vector<string> inputNames(1);
-	inputNames[0] = "uxt";
-
-	NeuralNetwork myNet(shape,new sigmoid,new sigmoid,new L1, inputNames);//make static vars for math functions //and a namespace
+	NeuralNetwork myNet(shape,new relu,new relu,new L1, inputNames);//make static vars for math functions //and a namespace
 
 	cout << fixed << setprecision(5);
 
@@ -60,28 +81,45 @@ int main()
 
 	mathFunction *SQUARE = new squareError;
 
-	for (int i = 0; i < 1500000; i++)
+	for (int i = 0; i < 100000000; i++)
 	{
-		for (int j = 0; j < 50; j++)
-		{
-			myNet.forwardProp(vector<double>{j / 50.0});
-			myNet.backwardProp(0.5 + 0.5 * cos(j / 50.0 * 3.1415 * 8.0), SQUARE);
-		}
 		
-		if (i % 1000 == 0)
+		for (int x = 0; x < inputImage.cols; x++)
+		{
+			for (int y = 0; y < inputImage.rows; y++)
+			{
+				if (rand01(gen) < 0.09)
+					continue;
+				myNet.forwardProp(vector<double>{x / (inputImage.cols / 0.5) - 1.0, y / (inputImage.rows / 0.5) - 1.0});
+				myNet.backwardProp(inputImage.at<cv::Vec3b>(cv::Point(x, y))[0] / 255.0, SQUARE);
+			}
+		}
+
+		if (i % 100 == 0)
 		{
 			cout << "Epoch: " << i << endl;
-			plotSingleVarNet(myNet, 0, 1);
-			cout << endl;
+			//plotSingleVarNet(myNet, 0, 1);
+			//cout << endl;
+			net2Mat(myNet, outputImage);
+			cv::imwrite("D:\\stuff.png", outputImage);
+
 		}
 		
+		
+		//cv::imshow("output", outputImage);
+		if (i<10000)
+			myNet.updateWeights(0.01, 0);
+		else
+			myNet.updateWeights(0.01 * (10000 / (i+0.0)), 0);
 
-		myNet.updateWeights(1, 0);
+
+
+		
 		
 	}
+
 	
-	
-	plotSingleVarNet(myNet, 0, 1);
+	//plotSingleVarNet(myNet, 0, 1);
 
 
 	int t;
