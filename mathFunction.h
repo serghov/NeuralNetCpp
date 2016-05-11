@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <cmath>
-
+#include <vector>
 using namespace std;
 
 class mathFunction {
@@ -15,5 +15,8 @@ public:
 
 	virtual double f(int target, int current, double x);
 	virtual double dfdx(int target, int current, double x);
+
+	virtual vector<double> f(vector<double> &x);
+	virtual vector<double> dfdx(vector<double> &x);
 
 };

@@ -29,3 +29,14 @@ double mathFunction::dfdx(int target, int current, double x)
 {
 	return 1;
 }
+
+vector<double> mathFunction::f(vector<double> &x)
+{
+	return x;
+}
+
+vector<double> mathFunction::dfdx(vector<double> &x)
+{
+	return vector<double>(x.size());
+}
+

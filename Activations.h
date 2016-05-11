@@ -25,3 +25,9 @@ public:
 	virtual double f(double x);
 	virtual double dfdx(double x);
 };
+
+class softmax : public mathFunction {
+public:
+	virtual vector<double> f(vector<double> &x);
+	virtual vector<double> dfdx(vector<double> &x);
+};

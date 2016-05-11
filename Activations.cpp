@@ -51,3 +51,22 @@ double sigmoid::dfdx(double x)
 	double f = sigmoid::f(x);
 	return f * (1 - f);
 }
+
+vector<double> softmax::f(vector<double> &x)
+{
+	double sum = 0;
+	int i;
+	for (i = 0; i < x.size() :i++)
+		sum += exp(x[i]);
+	vector<double> res(x.size());
+	for (i = 0; i < x.size(); i++)
+		res[i] = exp(x[i]) / sum;
+	return res;
+}
+
+vector<double> softmax::dfdx(vector<double> &x)
+{
+	return x;//TODO
+}
+
+
