@@ -67,7 +67,7 @@ int main()
 		//	myNet.forwardProp(vector<double>{j/50.0});			
 		//	myNet.backwardProp(0.5 + 0.5 * sin(j/50.0 * 3.1415 * 4), new squareError);
 		//}
-		for (int j = 0; j < 1; j++)
+		for (int j = 0; j < 2; j++)
 		{
 			double k = rand01(gen);
 			myNet.forwardProp(vector<double>{k});
@@ -79,8 +79,7 @@ int main()
 			cout << "Epoch: " << i << endl;
 			plotSingleVarNet(myNet, 0, 1);
 		}
-
-
+		
 		myNet.updateWeights(0.1, 0);
 	}
 
