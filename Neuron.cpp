@@ -27,7 +27,7 @@ double Neuron::update()
 	{
 		this->totalInput += inputs[i]->weight * inputs[i]->source->output;
 	}
-	this->output = this->activation->f(this->totalInput);
-	return this->output;
+	//this->output = this->activation->f(this->totalInput);
+	return this->totalInput;
 }
 

@@ -4,7 +4,7 @@
 #include <vector>
 #include <iomanip>
 
-
+using namespace nncpp;
 
 void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 {
@@ -37,19 +37,17 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 
 int main()
 {
-	vector<int> shape(6);
+	vector<int> shape(4);
 	shape[0] = 1;
-	shape[1] = 10;
-	shape[2] = 10;
-	shape[3] = 10;
-	shape[4] = 10;
-	shape[5] = 1;
+	shape[1] = 20;
+	shape[2] = 20;
+	shape[3] = 1;
 
 
 	vector<string> inputNames(1);
 	inputNames[0] = "uxt";
 
-	NeuralNetwork myNet(shape, new Tanh, new Tanh, new L1, inputNames);//make static vars for math functions //and a namespace
+	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L1, inputNames);//make static vars for math functions //and a namespace
 
 	cout << fixed << setprecision(5);
 
@@ -60,18 +58,14 @@ int main()
 	uniform_real_distribution<> rand01(0, 1);
 
 
-	for (int i = 0; i < 100000; i++)
+	for (int i = 0; i < 1000000; i++)
 	{
-		//for (int j = 0; j < 50; j++)
-		//{
-		//	myNet.forwardProp(vector<double>{j/50.0});			
-		//	myNet.backwardProp(0.5 + 0.5 * sin(j/50.0 * 3.1415 * 4), new squareError);
-		//}
-		for (int j = 0; j < 2; j++)
+
+		for (int j = 0; j < 1; j++)
 		{
 			double k = rand01(gen);
 			myNet.forwardProp(vector<double>{k});
-			myNet.backwardProp(0.5 + 0.5 * sin(k * 3.1415 * 4), new squareError);
+			myNet.backwardProp(0.5 + 0.5 * sin(k * 3.1415 * 4), ErrorFunctions::SQUARE);
 		}
 
 		if (i % 1000 == 0)

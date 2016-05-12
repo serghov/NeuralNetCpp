@@ -45,7 +45,14 @@ double NeuralNetwork::forwardProp(vector<double> &inputs)
 void NeuralNetwork::backwardProp(double target, mathFunction* errorFunction)
 {
 	int i, j;
-	this->network[this->network.size() - 1][0].outputDer = errorFunction->dfdx(this->network[this->network.size() - 1][0].output, target);
+	for (i = 0; i < this->network[this->network.size() - 1].size(); i++)
+	{
+		if (errorFunction->name!="logmin")
+			this->network[this->network.size() - 1][i].outputDer = errorFunction->dfdx(this->network[this->network.size() - 1][i].output, target);
+		else
+			this->network[this->network.size() - 1][i].outputDer = errorFunction->dfdx((int)target, i, this->network[this->network.size() - 1][i].output);
+	}
+		
 
 	for (i = this->network.size() - 1; i > 0; i--)
 	{
