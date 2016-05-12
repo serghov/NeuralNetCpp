@@ -5,19 +5,22 @@
 
 using namespace std;
 
-class Neuron;
+namespace nncpp {
+	class Neuron;
 
-class NeuralLink {
-public:
-	string name;
-	Neuron* source;
-	Neuron* dest;
+	class NeuralLink {
+	public:
+		string name;
+		Neuron* source;
+		Neuron* dest;
 
-	double weight;//random of some sorts
+		double weight;//random of some sorts
 
-	double errorDer = 0, accErrorDer = 0; int numAccError = 0;
-	mathFunction* regularization;
+		double errorDer = 0, accErrorDer = 0; int numAccError = 0;
+		mathFunction* regularization;
 
-	NeuralLink(Neuron* source, Neuron* dest, mathFunction* regularization);
+		NeuralLink(Neuron* source, Neuron* dest, mathFunction* regularization);
 
-};
+	};
+}
+

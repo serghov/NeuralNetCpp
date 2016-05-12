@@ -12,12 +12,14 @@
 #include <iostream>
 using namespace std;
 
-class NeuralNetwork {
-public:
-	vector<NeuralLayer> network;
+namespace nncpp {
+	class NeuralNetwork {
+	public:
+		vector<NeuralLayer> network;
 
-	NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, vector<string> inputNames);
-	double forwardProp(vector<double> &inputs);
-	void backwardProp(double target, mathFunction* errorFunction);
-	void updateWeights(double learningRate, double regularizationNumber);
-};
+		NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, vector<string> inputNames);
+		double forwardProp(vector<double> &inputs);
+		void backwardProp(double target, mathFunction* errorFunction);
+		void updateWeights(double learningRate, double regularizationNumber);
+	};
+}
