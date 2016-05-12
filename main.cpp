@@ -12,7 +12,7 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 	vector<double> res(60);
 	for (i = 0; i < 60; i++)
 	{
-		res[i] = myNet.forwardProp(vector<double>{ (i + 0.0) / (rangeEnd - rangeStart) / 60.0 + rangeStart});
+		res[i] = myNet.forwardProp(vector<double>{ (i + 0.0) / (rangeEnd - rangeStart) / 60.0 + rangeStart})[0];
 	}
 
 	for (i = 0; i < 60; i++)
@@ -43,11 +43,7 @@ int main()
 	shape[2] = 20;
 	shape[3] = 1;
 
-
-	vector<string> inputNames(1);
-	inputNames[0] = "uxt";
-
-	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L1, inputNames);//make static vars for math functions //and a namespace
+	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L1, false);
 
 	cout << fixed << setprecision(5);
 
@@ -82,7 +78,6 @@ int main()
 
 	int t;
 	cin >> t;
-
 
 	return 0;
 }

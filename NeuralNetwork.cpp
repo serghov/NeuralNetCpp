@@ -1,7 +1,7 @@
 #include "NeuralNetwork.h"
 
 namespace nncpp {
-	NeuralNetwork::NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, vector<string> inputNames)
+	NeuralNetwork::NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, bool isSoftmax)
 	{
 		this->network = vector<NeuralLayer>(shape.size());
 
@@ -10,9 +10,9 @@ namespace nncpp {
 		for (int i = 0; i < shape.size(); i++)
 		{
 			if (i == shape.size() - 1)
-				this->network[i] = NeuralLayer(shape[i], outputActivation);
+				this->network[i] = NeuralLayer(shape[i], outputActivation, isSoftmax);
 			else
-				this->network[i] = NeuralLayer(shape[i], activation);
+				this->network[i] = NeuralLayer(shape[i], activation, false);
 
 			for (int j = 0; j < this->network[i].size(); j++)
 			{
@@ -30,7 +30,7 @@ namespace nncpp {
 	}
 
 
-	double NeuralNetwork::forwardProp(vector<double> &inputs)
+	vector<double> NeuralNetwork::forwardProp(vector<double> &inputs)
 	{
 		int i, j;
 
@@ -40,7 +40,8 @@ namespace nncpp {
 		for (i = 1; i < this->network.size(); i++)
 			this->network[i].update();
 
-		return this->network[this->network.size() - 1][0].output;
+		//return this->network[this->network.size() - 1][0].output;
+		return this->network[this->network.size() - 1].toVector();
 	}
 
 	void NeuralNetwork::backwardProp(double target, mathFunction* errorFunction)
@@ -48,10 +49,15 @@ namespace nncpp {
 		int i, j;
 		for (i = 0; i < this->network[this->network.size() - 1].size(); i++)
 		{
-			if (errorFunction->name != "logmin")
-				this->network[this->network.size() - 1][i].outputDer = errorFunction->dfdx(this->network[this->network.size() - 1][i].output, target);
+			if (this->network[this->network.size() - 1].isSoftmax)
+			{
+				if (i == (int)target)
+					this->network[this->network.size() - 1][i].outputDer = -1.0 / this->network[this->network.size() - 1][i].output;
+				else
+					this->network[this->network.size() - 1][i].outputDer = 0;
+			}				
 			else
-				this->network[this->network.size() - 1][i].outputDer = errorFunction->dfdx((int)target, i, this->network[this->network.size() - 1][i].output);
+				this->network[this->network.size() - 1][i].outputDer = errorFunction->dfdx(this->network[this->network.size() - 1][i].output, target);//make the function accept a vector as target
 		}
 
 
@@ -61,7 +67,16 @@ namespace nncpp {
 			{
 				Neuron* neuron = &this->network[i][j];
 
-				neuron->inputDer = neuron->outputDer * neuron->activation->dfdx(neuron->totalInput);
+				if (this->network[this->network.size() - 1].isSoftmax && i == this->network.size() - 1)
+				{
+					if (j == (int)target)
+						neuron->inputDer = neuron->outputDer * -1.0 / neuron->totalInput;
+					else
+						neuron->inputDer = 0;
+				}					
+				else
+					neuron->inputDer = neuron->outputDer * neuron->activation->dfdx(neuron->totalInput);
+
 				neuron->accInputDer += neuron->inputDer;
 				neuron->numAccInputDer++;
 			}
@@ -122,5 +137,6 @@ namespace nncpp {
 			}
 		}
 	}
+
 }
 

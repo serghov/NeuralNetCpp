@@ -17,8 +17,8 @@ namespace nncpp {
 	public:
 		vector<NeuralLayer> network;
 
-		NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, vector<string> inputNames);
-		double forwardProp(vector<double> &inputs);
+		NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, bool isSoftmax);// change the constructor to layer per layer type at some point
+		vector<double> forwardProp(vector<double> &inputs);
 		void backwardProp(double target, mathFunction* errorFunction);
 		void updateWeights(double learningRate, double regularizationNumber);
 	};
