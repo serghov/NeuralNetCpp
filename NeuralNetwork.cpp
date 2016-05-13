@@ -153,7 +153,7 @@ namespace nncpp {
 		random_device rd;
 		mt19937 gen(rd());
 
-		uniform_real_distribution<> rand(-1, 1);
+		uniform_real_distribution<> rand(-0.15, 0.15);
 		uniform_real_distribution<> rand01(0, 1);
 
 

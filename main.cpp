@@ -44,7 +44,7 @@ int main()
 {
 	MNIST mnist("./train.csv", 42000);
 
-	vector<int> shape{ 784, 28 ,10 };
+	vector<int> shape{ 784 , 28, 10 };
 
 	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
@@ -76,11 +76,12 @@ int main()
 		trainLabels[i] = mnist.labels[i];
 	}
 		
-	double T = 1;
-	for (int i = 0; i < 20; i++)
+	double T = 10;
+	for (int i = 0; i < 200000; i++)
 	{
-		myNet.doAnnealingStep(trainData, trainLabels, T);
-		T = 0.8 * T;
+		myNet.doAnnealingStep(trainData, trainLabels, T);\
+		if (i%5==0)
+			T = 0.7 * T;
 
 		int res = 0;
 		double error = 0;
