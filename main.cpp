@@ -41,7 +41,7 @@ int main()
 {
 	MNIST mnist("D:\\Documents\\VisualStudioProjects\\nauralNet\\train.csv", 42000);
 
-	vector<int> shape{ 784, 100 ,10 };
+	vector<int> shape{ 784, 28 ,10 };
 
 	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
@@ -88,36 +88,13 @@ int main()
 			}
 			cout << "Epoch: " << i / 294 << endl;
 			cout << res / 12600.0 << endl;
-
-			int maxi = 0, mini = 0;
-			int maxj = 0, minj = 0;
-			for (int j = 0; j < myNet.network[0].size(); j++)
-			{
-				for (int g = 0; g < myNet.network[0][j].outputs.size(); g++)
-				{
-					if (myNet.network[0][j].outputs[g]->weight < myNet.network[0][j].outputs[mini]->weight)
-					{
-						mini = g;
-						minj = j;
-					}
-
-
-					if (myNet.network[0][j].outputs[g]->weight > myNet.network[0][j].outputs[mini]->weight)
-					{
-						maxi = g;
-						maxj = j;
-					}
-
-				}
-			}
-			cout << "MIN: " << myNet.network[0][minj].outputs[mini]->weight << endl;
-			cout << "MAX: " << myNet.network[0][maxj].outputs[maxi]->weight << endl;
-
-			//alpha /= 2.0;
+		
 		}
-		//if (i && (i/294)%100 == 0)
-		//	alpha /= 2.0;
 
+		int epoch = i / 294;
+
+		if (epoch > 0 && epoch % 100 == 0)
+			alpha /= 2.0;
 
 		myNet.updateWeights(alpha, 0.01);
 	}
