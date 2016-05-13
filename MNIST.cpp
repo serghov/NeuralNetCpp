@@ -27,7 +27,7 @@ MNIST::MNIST(string datafile, int length)
 					labels[r] = v;
 				}
 				else {
-					images[r][col - 1] = v / 256.0;
+					images[r][col - 1] = v / 128.0 - 1.0;
 				}
 				col++;
 				v = 0;
@@ -36,10 +36,10 @@ MNIST::MNIST(string datafile, int length)
 			v *= 10;
 			v += c[i] - '0';
 		}
-		images[r][col - 1] = v / 256.0;
+		images[r][col - 1] = v / 128.0 - 1.0;
 		r++;
 		if (r % 439 == 0) {
 			cout << r << '\n';
-		}//change this code, doesnt work on small numbers no time to check why
+		}//change this
 	}
 }
