@@ -41,7 +41,7 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 
 int main()
 {
-	MNIST mnist("D:\\Documents\\VisualStudioProjects\\nauralNet\\train.csv", 42000);
+	MNIST mnist("./train.csv", 42000);
 
 	vector<int> shape{ 784, 28 ,10 };
 
