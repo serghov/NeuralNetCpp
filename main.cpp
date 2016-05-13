@@ -4,6 +4,8 @@
 #include <vector>
 #include <iomanip>
 
+#include <fstream>
+
 #include "MNIST.h"
 
 using namespace nncpp;
@@ -45,6 +47,10 @@ int main()
 
 	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
+	ofstream fout("network.txt");
+	fout << myNet.toString();
+	fout.close();
+
 	cout << fixed << setprecision(5);
 
 	random_device rd;
@@ -58,6 +64,8 @@ int main()
 	//29400 levon, 12600
 
 	int curIterationNum = 0;
+
+	double lastPercentage = 0;
 
 	for (int i = 0; i < 1000000; i++)
 	{
@@ -88,6 +96,13 @@ int main()
 			}
 			cout << "Epoch: " << i / 294 << endl;
 			cout << res / 12600.0 << endl;
+			if (lastPercentage < res / 12600.0)
+			{
+				ofstream fout("network.txt");
+				fout << myNet.toString();
+				fout.close();
+				lastPercentage = res / 12600.0;
+			}
 		
 		}
 
