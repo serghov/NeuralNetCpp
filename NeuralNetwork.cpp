@@ -138,5 +138,14 @@ namespace nncpp {
 		}
 	}
 
+	string NeuralNetwork::toString()
+	{
+		string res = "";
+		res += std::to_string(this->network.size()) + "\n";
+		for (int i = 0; i < this->network.size(); i++)
+			res += this->network[i].toString();
+		return res;		
+	}
+
 }
 

@@ -14,6 +14,7 @@ namespace nncpp {
 		int size();
 		Neuron& operator[](int i);
 		vector<double> toVector();
+		string toString();
 	};
 }
 

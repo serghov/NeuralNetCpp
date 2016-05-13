@@ -31,5 +31,16 @@ namespace nncpp {
 		//this->output = this->activation->f(this->totalInput);
 		return this->totalInput;
 	}
+
+	string Neuron::toString()
+	{
+		string res = "";
+		res += std::to_string(this->bias) + "\n";
+		for (int i = 0; i < this->inputs.size(); i++)
+			res += std::to_string(this->inputs[i]->weight) + " ";
+		res += "\n";
+		return res;
+	}
+
 }
 

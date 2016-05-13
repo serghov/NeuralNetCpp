@@ -52,4 +52,15 @@ namespace nncpp {
 		return res;
 	}
 
+	string NeuralLayer::toString()
+	{
+		string res = "";
+		res += std::to_string(this->size()) + "\n";
+		for (int i = 0; i < this->size(); i++)
+		{
+			res += this->neurons[i].toString();
+		}
+		return res;
+	}
+
 }

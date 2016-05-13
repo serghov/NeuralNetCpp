@@ -20,10 +20,13 @@ namespace nncpp {
 
 		mathFunction* activation;
 		Neuron();
-		Neuron(string name, mathFunction* activation);
+		Neuron(string name, mathFunction* activation);		
 		~Neuron();
 
 		double update();
+
+		string toString();
+		
 	};
 
 }

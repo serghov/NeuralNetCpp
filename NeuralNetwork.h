@@ -21,5 +21,6 @@ namespace nncpp {
 		vector<double> forwardProp(vector<double> &inputs);
 		void backwardProp(double target, mathFunction* errorFunction);
 		void updateWeights(double learningRate, double regularizationNumber);
+		string toString();
 	};
 }
