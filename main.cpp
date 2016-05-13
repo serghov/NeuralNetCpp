@@ -9,6 +9,7 @@
 #include "MNIST.h"
 
 using namespace nncpp;
+using namespace std;
 
 void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 {
@@ -67,6 +68,40 @@ int main()
 
 	double lastPercentage = 0;
 
+	vector<vector<double> > trainData(29400);
+	vector<int> trainLabels(29400);
+	for (int i = 0; i < trainData.size(); i++)
+	{
+		trainData[i] = mnist.images[i];
+		trainLabels[i] = mnist.labels[i];
+	}
+		
+	double T = 1;
+	for (int i = 0; i < 20; i++)
+	{
+		myNet.doAnnealingStep(trainData, trainLabels, T);
+		T = 0.8 * T;
+
+		int res = 0;
+		double error = 0;
+		for (int j = 0; j < 12600; j++)
+		{
+			vector<double> tmp = myNet.forwardProp(mnist.images[j + 29400]);
+			int maxi = 0;
+			for (int g = 0; g < 10; g++)
+			{
+				if (tmp[maxi] < tmp[g])
+					maxi = g;
+			}
+			res += maxi == mnist.labels[j + 29400];
+
+			error += myNet.getAverageError(mnist.images[j + 29400], mnist.labels[j + 29400], ErrorFunctions::LOG);
+		}
+		cout << "Epoch: " << i << endl;
+		cout << "Success rate: " << res / 12600.0 << endl;
+		cout << "Average error: " << error / 12600.0 << endl;
+	}
+	return 0;
 	for (int i = 0; i < 1000000; i++)
 	{
 
@@ -83,6 +118,7 @@ int main()
 
 		if (i % 294 == 0)
 		{
+			double error = 0;
 			for (int j = 0; j < 12600; j++)
 			{
 				vector<double> tmp = myNet.forwardProp(mnist.images[j + 29400]);
@@ -93,9 +129,14 @@ int main()
 						maxi = g;
 				}
 				res += maxi == mnist.labels[j + 29400];
+
+				error += myNet.getAverageError(mnist.images[j + 29400], mnist.labels[j + 29400], ErrorFunctions::LOG);
 			}
 			cout << "Epoch: " << i / 294 << endl;
-			cout << res / 12600.0 << endl;
+			cout << "Success rate: "<< res / 12600.0 << endl;
+			cout << "Average error: "<< error / 12600.0 << endl;
+
+
 			if (lastPercentage < res / 12600.0)
 			{
 				ofstream fout("network.txt");
@@ -113,8 +154,6 @@ int main()
 
 		myNet.updateWeights(alpha, 0.01);
 	}
-
-	plotSingleVarNet(myNet, 0, 1);
 
 
 	int t;

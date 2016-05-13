@@ -106,6 +106,7 @@ namespace nncpp {
 			}
 		}
 
+		
 	}
 
 	void NeuralNetwork::updateWeights(double learningRate, double regularizationRate)
@@ -138,13 +139,88 @@ namespace nncpp {
 		}
 	}
 
+	double NeuralNetwork::getAverageError(vector<double> input, double target, mathFunction *errorFunction)
+	{
+		return -log(this->forwardProp(input)[(int)target]);//make generic
+	}
+
+	void NeuralNetwork::doAnnealingStep(vector<vector<double> > inputs, vector<int> labels, double T)
+	{
+		double curLossVal = 0;
+		for (int i = 0; i < inputs.size(); i++)
+			curLossVal += this->getAverageError(inputs[i], 0.0 + labels[i], ErrorFunctions::LOG);
+		curLossVal /= inputs.size() + 0.0;
+		random_device rd;
+		mt19937 gen(rd());
+
+		uniform_real_distribution<> rand(-1, 1);
+		uniform_real_distribution<> rand01(0, 1);
+
+
+		vector<double> weights(0);
+		for (int i = 0; i < this->network.size(); i++)
+		{
+			for (int j = 0; j < this->network[i].size(); j++)
+			{
+				for (int g = 0; g < this->network[i][j].inputs.size(); g++)
+				{
+					weights.push_back(this->network[i][j].inputs[g]->weight);
+					this->network[i][j].inputs[g]->weight += rand(gen);
+				}
+			}
+		}
+		vector <double> biases(0);
+		for (int i = 0; i < this->network.size(); i++)
+		{
+			for (int j = 0; j < this->network[i].size(); j++)
+			{
+				biases.push_back(this->network[i][j].bias);
+				this->network[i][j].bias += rand(gen);
+			}
+		}
+
+		double newLossVal = 0;
+		for (int i = 0; i < inputs.size(); i++)
+			newLossVal += this->getAverageError(inputs[i], 0.0 + labels[i], ErrorFunctions::LOG);
+		newLossVal /= inputs.size() + 0.0;
+
+		if (newLossVal < curLossVal)
+			return;
+
+		double P = exp((curLossVal - newLossVal) / T);
+		double newP = rand01(gen);
+		if (P > newP)
+			return;
+		int k = 0;
+		for (int i = 0; i < this->network.size(); i++)
+		{
+			for (int j = 0; j < this->network[i].size(); j++)
+			{
+				for (int g = 0; g < this->network[i][j].inputs.size(); g++)
+				{
+					this->network[i][j].inputs[g]->weight = weights[k++];
+				}
+			}
+		}
+
+		k = 0;
+		for (int i = 0; i < this->network.size(); i++)
+		{
+			for (int j = 0; j < this->network[i].size(); j++)
+			{
+				this->network[i][j].bias = biases[k++];
+			}
+		}
+
+	}
+
 	string NeuralNetwork::toString()
 	{
 		string res = "";
 		res += std::to_string(this->network.size()) + "\n";
 		for (int i = 0; i < this->network.size(); i++)
 			res += this->network[i].toString();
-		return res;		
+		return res;
 	}
 
 }
