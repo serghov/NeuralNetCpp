@@ -109,7 +109,7 @@ int main()
 		int epoch = i / 294;
 
 		if (epoch > 0 && epoch % 100 == 0)
-			alpha /= 2.0;
+			alpha *= 0.8;
 
 		myNet.updateWeights(alpha, 0.01);
 	}
