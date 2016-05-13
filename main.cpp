@@ -4,6 +4,8 @@
 #include <vector>
 #include <iomanip>
 
+#include "MNIST.h"
+
 using namespace nncpp;
 
 void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
@@ -37,13 +39,11 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 
 int main()
 {
-	vector<int> shape(4);
-	shape[0] = 1;
-	shape[1] = 20;
-	shape[2] = 20;
-	shape[3] = 1;
+	MNIST mnist("D:\\Documents\\VisualStudioProjects\\nauralNet\\train.csv", 42000);
 
-	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L1, false);
+	vector<int> shape{ 784, 100 ,10 };
+
+	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
 	cout << fixed << setprecision(5);
 
@@ -54,23 +54,72 @@ int main()
 	uniform_real_distribution<> rand01(0, 1);
 
 
+	double alpha = 0.1;
+	//29400 levon, 12600
+
+	int curIterationNum = 0;
+
 	for (int i = 0; i < 1000000; i++)
 	{
 
-		for (int j = 0; j < 1; j++)
+		for (int j = 0; j < 100; j++)
 		{
-			double k = rand01(gen);
-			myNet.forwardProp(vector<double>{k});
-			myNet.backwardProp(0.5 + 0.5 * sin(k * 3.1415 * 4), ErrorFunctions::SQUARE);
+			myNet.forwardProp(mnist.images[j + curIterationNum * 100]);
+			myNet.backwardProp(mnist.labels[j + curIterationNum * 100], ErrorFunctions::SQUARE);
 		}
 
-		if (i % 1000 == 0)
+		curIterationNum++;
+		curIterationNum %= 294;
+
+		int res = 0;
+
+		if (i % 294 == 0)
 		{
-			cout << "Epoch: " << i << endl;
-			plotSingleVarNet(myNet, 0, 1);
+			for (int j = 0; j < 12600; j++)
+			{
+				vector<double> tmp = myNet.forwardProp(mnist.images[j + 29400]);
+				int maxi = 0;
+				for (int g = 0; g < 10; g++)
+				{
+					if (tmp[maxi] < tmp[g])
+						maxi = g;
+				}
+				res += maxi == mnist.labels[j + 29400];
+			}
+			cout << "Epoch: " << i / 294 << endl;
+			cout << res / 12600.0 << endl;
+
+			int maxi = 0, mini = 0;
+			int maxj = 0, minj = 0;
+			for (int j = 0; j < myNet.network[0].size(); j++)
+			{
+				for (int g = 0; g < myNet.network[0][j].outputs.size(); g++)
+				{
+					if (myNet.network[0][j].outputs[g]->weight < myNet.network[0][j].outputs[mini]->weight)
+					{
+						mini = g;
+						minj = j;
+					}
+
+
+					if (myNet.network[0][j].outputs[g]->weight > myNet.network[0][j].outputs[mini]->weight)
+					{
+						maxi = g;
+						maxj = j;
+					}
+
+				}
+			}
+			cout << "MIN: " << myNet.network[0][minj].outputs[mini]->weight << endl;
+			cout << "MAX: " << myNet.network[0][maxj].outputs[maxi]->weight << endl;
+
+			//alpha /= 2.0;
 		}
-		
-		myNet.updateWeights(0.1, 0);
+		//if (i && (i/294)%100 == 0)
+		//	alpha /= 2.0;
+
+
+		myNet.updateWeights(alpha, 0.01);
 	}
 
 	plotSingleVarNet(myNet, 0, 1);
