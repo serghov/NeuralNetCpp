@@ -3,6 +3,7 @@
 namespace nncpp {
 
 	mathFunction* ErrorFunctions::SQUARE = new squareError();
+	mathFunction* ErrorFunctions::LOG = new logMin();
 
 	double squareError::f(double x, double y)
 	{
@@ -14,16 +15,14 @@ namespace nncpp {
 		return x - y;
 	}
 
-	double logMin::f(int target, int current, double x)
+	double logMin::f(double x, double y)
 	{
-		//TODO
+		return -log(x - y);
 	}
 
-	double logMin::dfdx(int target, int current, double x)
+	double logMin::dfdx(double x, double y)
 	{
-		if (target == current)
-			return -1.0 / x;
-		return 0;
+		return y - x;
 	}
 }
 

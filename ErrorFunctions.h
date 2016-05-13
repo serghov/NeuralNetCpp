@@ -12,13 +12,14 @@ namespace nncpp {
 	class logMin : public mathFunction {
 	public:
 		string name = "logmin";
-		virtual double f(int target, int current, double x);
-		virtual double dfdx(int target, int current, double x);
+		virtual double f(double x, double y);
+		virtual double dfdx(double x, double y);
 	};
 
 	class ErrorFunctions {
 	public:
 		static mathFunction* SQUARE;
+		static mathFunction* LOG;
 	};
 }
 
