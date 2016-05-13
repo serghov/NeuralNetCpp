@@ -52,9 +52,9 @@ namespace nncpp {
 			if (this->network[this->network.size() - 1].isSoftmax)
 			{
 				if (i == (int)target)
-					this->network[this->network.size() - 1][i].outputDer = -1.0 / this->network[this->network.size() - 1][i].output;
+					this->network[this->network.size() - 1][i].outputDer = -(1.0 - this->network[this->network.size() - 1][i].output);
 				else
-					this->network[this->network.size() - 1][i].outputDer = 0;
+					this->network[this->network.size() - 1][i].outputDer = this->network[this->network.size() - 1][i].output;;
 			}				
 			else
 				this->network[this->network.size() - 1][i].outputDer = errorFunction->dfdx(this->network[this->network.size() - 1][i].output, target);//make the function accept a vector as target
@@ -70,9 +70,9 @@ namespace nncpp {
 				if (this->network[this->network.size() - 1].isSoftmax && i == this->network.size() - 1)
 				{
 					if (j == (int)target)
-						neuron->inputDer = neuron->outputDer * -1.0 / neuron->totalInput;
+						neuron->inputDer = neuron->outputDer;// *-1.0 / neuron->totalInput;
 					else
-						neuron->inputDer = 0;
+						neuron->inputDer = neuron->outputDer;
 				}					
 				else
 					neuron->inputDer = neuron->outputDer * neuron->activation->dfdx(neuron->totalInput);
