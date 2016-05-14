@@ -18,7 +18,7 @@ Whole code is written in c++ and has no external dependencies.
 
 ## Structure
 
-The code is written in an easy to understand and self explanatory. The code consists of several classes;
+The code is written in an easy to understand and self explanatory way. The code consists of several classes;
 * Neuron.h, Neuron.cpp - artificial neuron
 * NeuralLink.h, NeuralLink.cpp - link between two neurons
 * NeuralLayer.h NeuralLayer.cpp - layer consisting of multiple neurons
@@ -32,3 +32,11 @@ There are also these supporting classes;
 
 The main file contains implementation for reading MNIST data dividing it into two sets and running gradiend descent or simulated anealing optimization.
 The code with gradient descent method and one hidden layer with 28 neurons can reach 96.2% accuracy.
+
+## TODO
+* makefile
+* seperate project in a library
+* seperate examples in different files
+* loading a neural network from a file
+* mpi support maybe gpu support?
+* everything else
