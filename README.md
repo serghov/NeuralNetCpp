@@ -38,5 +38,7 @@ The code with gradient descent method and one hidden layer with 28 neurons can r
 * seperate project in a library
 * seperate examples in different files
 * loading a neural network from a file
-* mpi support maybe gpu support?
+* mpi support
+* GPU support
+* Convolutions
 * everything else
