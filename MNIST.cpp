@@ -2,6 +2,11 @@
 
 #include "MNIST.h"
 
+MNIST::MNIST()
+{
+
+}
+
 MNIST::MNIST(string datafile, int length)
 {
 	FILE *fin = fopen(datafile.c_str(), "r");
@@ -42,4 +47,76 @@ MNIST::MNIST(string datafile, int length)
 			cout << r << '\n';
 		}//change this
 	}
+
+}
+
+void MNIST::dump(unsigned char *&data, int &size)
+{
+	size = 0;
+	int i, j;
+
+	size += sizeof this->images.size();
+
+	for (i = 0; i < this->images.size(); i++)
+		for (j = 0; j < this->images[i].size(); j++)
+			size += sizeof this->images[i][j];
+
+	for (i = 0; i < this->labels.size(); i++)
+		size += sizeof this->labels[i];
+
+	data = new unsigned char[size];
+
+	int oneVec = (sizeof this->images[0][0]) * this->images[0].size();
+
+	int tmp = this->images.size();
+	memcpy(data, &tmp, sizeof tmp);
+
+	for (i = 0; i < this->images.size(); i++)
+		memcpy(data + sizeof tmp + i*oneVec, this->images[i].data(), oneVec);
+	//for (i = 0; i < this->labels.size(); i++)
+	//	memcpy(data + sizeof tmp + this->images.size()*oneVec + i*(sizeof this->labels[i]), &this->labels[i], sizeof this->labels[i]);
+	memcpy(data + sizeof tmp + this->images.size()*oneVec, this->labels.data(), this->labels.size() * (sizeof this->labels[0]));
+
+}
+
+void MNIST::readFromDump(unsigned char *data, int size)
+{
+	int arraySize, i, j;
+	memcpy(&arraySize, data, sizeof arraySize);
+	this->images = vector<vector<double> >(arraySize);
+	this->labels = vector<int>(arraySize);
+	for (i = 0; i < this->images.size(); i++)
+	{
+		this->images[i] = vector<double>(784);
+		memcpy(&this->images[i][0], data + sizeof arraySize + (i * 784 * sizeof this->images[i][0]), 784 * sizeof this->images[i][0]);
+	}
+
+	memcpy(this->labels.data(), data + sizeof arraySize + (this->images.size() * 784 * sizeof this->images[i][0]), this->labels.size() * (sizeof this->labels[i]));
+
+}
+
+void MNIST::dumpToFile(string location)
+{
+	unsigned char *data;
+	int size;
+	this->dump(data, size);
+	FILE* file = fopen(location.c_str(), "wb");
+	fwrite(data, sizeof (unsigned char), size, file);
+	fclose(file);
+	delete data;
+}
+
+void MNIST::readDumpFile(string location)
+{
+	unsigned char *data;
+
+	FILE* file = fopen(location.c_str(), "r");
+	fseek(file, 0L, SEEK_END);
+	int size = ftell(file);
+	rewind(file);
+	data = new unsigned char[size];
+	fread(data, sizeof(unsigned char), size, file);
+	fclose(file);
+	this->readFromDump(data, size);
+	delete data;
 }
