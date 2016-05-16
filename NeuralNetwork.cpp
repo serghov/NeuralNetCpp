@@ -144,12 +144,12 @@ namespace nncpp {
 		return -log(this->forwardProp(input)[(int)target]);//make generic
 	}
 
-	void NeuralNetwork::doAnnealingStep(vector<vector<double> > inputs, vector<int> labels, double T)
+	void NeuralNetwork::doAnnealingStep(vector<vector<double> > &inputs, vector<int> &labels, int size, double T)
 	{
 		double curLossVal = 0;
-		for (int i = 0; i < inputs.size(); i++)
+		for (int i = 0; i < size; i++)
 			curLossVal += this->getAverageError(inputs[i], 0.0 + labels[i], ErrorFunctions::LOG);
-		curLossVal /= inputs.size() + 0.0;
+		curLossVal /= size + 0.0;
 		random_device rd;
 		mt19937 gen(rd());
 
@@ -180,9 +180,9 @@ namespace nncpp {
 		}
 
 		double newLossVal = 0;
-		for (int i = 0; i < inputs.size(); i++)
+		for (int i = 0; i < size; i++)
 			newLossVal += this->getAverageError(inputs[i], 0.0 + labels[i], ErrorFunctions::LOG);
-		newLossVal /= inputs.size() + 0.0;
+		newLossVal /= size + 0.0;
 
 		if (newLossVal < curLossVal)
 			return;

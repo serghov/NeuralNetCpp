@@ -23,7 +23,7 @@ namespace nncpp {
 		void updateWeights(double learningRate, double regularizationNumber);
 		double getAverageError(vector<double> input, double target, mathFunction *errorFunction);
 
-		void doAnnealingStep(vector<vector<double> > inputs, vector<int> labels, double T);
+		void doAnnealingStep(vector<vector<double> > &inputs, vector<int> &labels, int size, double T);
 		string toString();
 	};
 }
