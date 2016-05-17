@@ -68,12 +68,7 @@ namespace nncpp {
 				Neuron* neuron = &this->network[i][j];
 
 				if (this->network[this->network.size() - 1].isSoftmax && i == this->network.size() - 1)
-				{
-					if (j == (int)target)
-						neuron->inputDer = neuron->outputDer;// *-1.0 / neuron->totalInput;
-					else
-						neuron->inputDer = neuron->outputDer;
-				}					
+					neuron->inputDer = neuron->outputDer;	
 				else
 					neuron->inputDer = neuron->outputDer * neuron->activation->dfdx(neuron->totalInput);
 
