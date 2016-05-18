@@ -39,12 +39,12 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 	cout << endl;
 }
 
-void doAnealingOnMnist(NeuralNetwork &myNet, MNIST &mnist)
+void doAnnealingOnMnist(NeuralNetwork &myNet, MNIST &mnist)
 {
 	double T = 10;
 	for (int i = 0; i < 200000; i++)
 	{
-		myNet.doAnnealingStep(mnist.images, mnist.labels, 29400, T); \
+		myNet.doAnnealingStep(mnist.images, mnist.labels, 29400, T);
 			if (i % 5 == 0)
 				T = 0.7 * T;
 
@@ -76,7 +76,7 @@ void doSGDOnMnist(NeuralNetwork &myNet, MNIST &mnist)
 	int curIterationNum = 0;
 	double lastPercentage = 0;
 
-	for (int i = 0; i < 1000000; i++)
+	for (int i = 0; i < 1000*294; i++)
 	{
 
 		for (int j = 0; j < 100; j++)
@@ -124,7 +124,7 @@ void doSGDOnMnist(NeuralNetwork &myNet, MNIST &mnist)
 		int epoch = i / 294;
 
 		if (epoch > 0 && epoch % 100 == 0)
-			alpha *= 0.8;
+			alpha *= 0.3;
 
 		myNet.updateWeights(alpha, 0.01);
 	}
@@ -133,22 +133,31 @@ void doSGDOnMnist(NeuralNetwork &myNet, MNIST &mnist)
 
 int main()
 {
-	MNIST mnist("./train.csv", 42000);
+	//MNIST mnist("./train.csv", 42000);
+	/*unsigned char *data;
+	int size;
+	mnist.dump(data, size);
+	mnist.readFromDump(data, size);
+	delete data;*/
+	//mnist.dumpToFile("mnistdump");
 
-	vector<int> shape{ 784 , 28, 10 };
+	MNIST mnist{};
+	mnist.readDumpFile("mnistdump");
+
+	vector<int> shape{ 784 , 400, 10 };
 
 	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
-	ofstream fout("network.txt");
-	fout << myNet.toString();
-	fout.close();
+	//ofstream fout("network.txt");
+	//fout << myNet.toString();
+	//fout.close();
 
 	cout << fixed << setprecision(5);
 
 		
 	
 	doSGDOnMnist(myNet, mnist);
-	//doAnealingOnMnist(myNet, mnist);
+	//doAnnealingOnMnist(myNet, mnist);
 
 	return 0;
 }
