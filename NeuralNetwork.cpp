@@ -50,12 +50,7 @@ namespace nncpp {
 		for (i = 0; i < this->network[this->network.size() - 1].size(); i++)
 		{
 			if (this->network[this->network.size() - 1].isSoftmax)
-			{
-				if (i == (int)target)
-					this->network[this->network.size() - 1][i].outputDer = -(1.0 - this->network[this->network.size() - 1][i].output);
-				else
-					this->network[this->network.size() - 1][i].outputDer = this->network[this->network.size() - 1][i].output;;
-			}				
+				this->network[this->network.size() - 1][i].outputDer = this->network[this->network.size() - 1][i].output - (double)(i == (int)target);
 			else
 				this->network[this->network.size() - 1][i].outputDer = errorFunction->dfdx(this->network[this->network.size() - 1][i].output, target);//make the function accept a vector as target
 		}
