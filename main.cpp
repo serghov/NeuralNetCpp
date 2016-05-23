@@ -163,7 +163,6 @@ int main()
 
 	vector<int> shape{ 784, 28, 10 };
 	
-
 	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
 	//ofstream fout("network.txt");
