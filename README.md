@@ -5,7 +5,7 @@ It has built in support for Sigmoid, Tanh, Linear, Relu, and Softmax activation 
 
 ## Optimization methods
 
-Currently there are implementations of gradiend descent as well as simulated anealing methods. The latter is an experiment and so far there are no good results with it.
+Currently there are implementations of gradiend descent as well as simulated annealing methods. The latter is an experiment and so far there are no good results with it.
 
 
 ## Building
@@ -14,7 +14,7 @@ This repository contains .sln file. It can easily be imported into visual studio
 
 ## Implementation
 
-Whole code is written in c++ and has no external dependencies.
+Whole code is written in c++ and has noa external dependencies.
 
 ## Structure
 
@@ -22,7 +22,7 @@ The code is written in an easy to understand and self explanatory way. The code 
 * Neuron.h, Neuron.cpp - artificial neuron
 * NeuralLink.h, NeuralLink.cpp - link between two neurons
 * NeuralLayer.h NeuralLayer.cpp - layer consisting of multiple neurons
-* NeuralNetwork.h NeuralNetwork.cpp - main class containing forward and backward propagations, as well as weights update and anealing functions
+* NeuralNetwork.h NeuralNetwork.cpp - main class containing forward and backward propagations, as well as weights update and annealing functions
 
 There are also these supporting classes;
 * mathFunction.h, mathFunction.cpp - a general class from which mathematical functions are derived
@@ -30,7 +30,7 @@ There are also these supporting classes;
 
 ## Running
 
-The main file contains implementation for reading MNIST data dividing it into two sets and running gradiend descent or simulated anealing optimization.
+The main file contains implementation for reading MNIST data dividing it into two sets and running gradiend descent or simulated annealing optimization.
 The code with gradient descent method and one hidden layer with 28 neurons can reach 96.2% accuracy.
 
 ## TODO
