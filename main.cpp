@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include "NeuralNetwork.h"
 
@@ -7,6 +9,8 @@
 #include <fstream>
 
 #include "MNIST.h"
+#include <stdio.h>
+
 
 using namespace nncpp;
 using namespace std;
@@ -123,13 +127,23 @@ void doSGDOnMnist(NeuralNetwork &myNet, MNIST &mnist)
 
 		int epoch = i / 294;
 
-		if (epoch > 0 && epoch % 100 == 0)
-			alpha *= 0.3;
+		//if (epoch > 0 && epoch % 100 == 0)
+		//	alpha *= 0.3;
 
 		myNet.updateWeights(alpha, 0.01);
 	}
 
 }
+
+bool fileExists(const std::string& name) {
+	if (FILE *file = fopen(name.c_str(), "r")) {
+		fclose(file);
+		return true;
+	}
+	return false;
+}
+
+
 
 int main()
 {
@@ -141,11 +155,14 @@ int main()
 	delete data;*/
 	//mnist.dumpToFile("mnistdump");
 
-	MNIST mnist{};
-	mnist.readDumpFile("mnistdump");
+	MNIST mnist;
+	if (fileExists("mnistdump"))
+		mnist.readDumpFile("mnistdump");
+	else
+		mnist = MNIST("./train.csv", 42000);
 
-	vector<int> shape{ 784 , 400, 10 };
-
+	vector<int> shape{ 784, 28, 10 };
+	
 	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
 	//ofstream fout("network.txt");
