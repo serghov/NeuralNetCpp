@@ -21,7 +21,8 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 	vector<double> res(60);
 	for (i = 0; i < 60; i++)
 	{
-		res[i] = myNet.forwardProp(vector<double>{ (i + 0.0) / (rangeEnd - rangeStart) / 60.0 + rangeStart})[0];
+        vector<double> tmp{ (i + 0.0) / (rangeEnd - rangeStart) / 60.0 + rangeStart};
+		res[i] = myNet.forwardProp(tmp)[0];
 	}
 
 	for (i = 0; i < 60; i++)
@@ -163,7 +164,7 @@ int main()
 		mnist = MNIST("./train.csv", 42000);
 
 	vector<int> shape{ 784, 28, 10 };
-	
+
 	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
 	//ofstream fout("network.txt");
@@ -172,8 +173,8 @@ int main()
 
 	cout << fixed << setprecision(5);
 
-		
-	
+
+
 	doSGDOnMnist(myNet, mnist);
 	//doAnnealingOnMnist(myNet, mnist);
 
