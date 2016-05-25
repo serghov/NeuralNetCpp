@@ -14,11 +14,11 @@ This repository contains .sln file. It can easily be imported into visual studio
 
 ## Implementation
 
-Whole code is written in c++ and has noa external dependencies.
+Everything is written in c++ and has no external dependencies.
 
 ## Structure
 
-The code is written in an easy to understand and self explanatory way. The code consists of several classes;
+The code is written in an easy to understand and self explanatory way. It consists of several classes;
 * Neuron.h, Neuron.cpp - artificial neuron
 * NeuralLink.h, NeuralLink.cpp - link between two neurons
 * NeuralLayer.h NeuralLayer.cpp - layer consisting of multiple neurons
@@ -31,14 +31,13 @@ There are also these supporting classes;
 ## Running
 
 The main file contains implementation for reading MNIST data dividing it into two sets and running gradiend descent or simulated annealing optimization.
-The code with gradient descent method and one hidden layer with 28 neurons can reach 96.2% accuracy.
+The application with gradient descent method and one hidden layer with 350 neurons can reach 97.7% accuracy.
 
 ## TODO
 * makefile
-* seperate project in a library
-* seperate examples in different files
-* loading a neural network from a file
-* mpi support
+* Isolate project in a library
+* Isolate examples in different files
+* Loading the neural network from a file
 * GPU support
 * Convolutions
-* everything else
+* Everything else
