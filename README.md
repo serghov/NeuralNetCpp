@@ -31,7 +31,7 @@ There are also these supporting classes;
 ## Running
 
 The main file contains implementation for reading MNIST data dividing it into two sets and running gradiend descent or simulated annealing optimization.
-The code with gradient descent method and one hidden layer with 28 neurons can reach 96.2% accuracy.
+The application with gradient descent method and one hidden layer with 350 neurons can reach 97.7% accuracy.
 
 ## TODO
 * makefile
