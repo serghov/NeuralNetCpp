@@ -44,6 +44,42 @@ void plotSingleVarNet(NeuralNetwork &myNet, double rangeStart, double rangeEnd)
 	cout << endl;
 }
 
+void doSinGraphSGD(NeuralNetwork &myNet)
+{
+random_device rd;
+	mt19937 gen(rd());
+
+	uniform_real_distribution<> rand001(-0.01, 0.01);
+	uniform_real_distribution<> rand01(0, 1);
+
+
+	for (int i = 0; i < 100000; i++)
+	{
+		//for (int j = 0; j < 50; j++)
+		//{
+		//	myNet.forwardProp(vector<double>{j/50.0});
+		//	myNet.backwardProp(0.5 + 0.5 * sin(j/50.0 * 3.1415 * 4), new squareError);
+		//}
+		for (int j = 0; j < 2; j++)
+		{
+			double k = rand01(gen);
+			vector<double> tmp{k};
+			myNet.forwardProp(tmp);
+			myNet.backwardProp(0.5 + 0.5 * sin(k * 3.1415 * 4), new squareError);
+		}
+
+		if (i % 1000 == 0)
+		{
+			cout << "Epoch: " << i << endl;
+			plotSingleVarNet(myNet, 0, 1);
+		}
+
+		myNet.updateWeights(0.1, 0);
+	}
+
+	plotSingleVarNet(myNet, 0, 1);
+}
+
 void doAnnealingOnMnist(NeuralNetwork &myNet, MNIST &mnist)
 {
 	double T = 10;
@@ -174,7 +210,7 @@ int main()
 	cout << fixed << setprecision(5);
 
 
-
+    //doSinGraphSGD(myNet);
 	doSGDOnMnist(myNet, mnist);
 	//doAnnealingOnMnist(myNet, mnist);
 
