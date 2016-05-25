@@ -15,6 +15,7 @@ namespace nncpp {
 		Neuron& operator[](int i);
 		vector<double> toVector();
 		string toString();
+		void updateWeights(double learningRate, double regularizationRate);
 	};
 }
 

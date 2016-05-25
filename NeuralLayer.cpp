@@ -63,4 +63,10 @@ namespace nncpp {
 		return res;
 	}
 
+	void NeuralLayer::updateWeights(double learningRate, double regularizationRate)
+	{
+		for (int i = 0; i < this->size(); i++)
+			this->neurons[i].updateWeights(learningRate, regularizationRate);
+	}
+
 }

@@ -103,29 +103,7 @@ namespace nncpp {
 	{
 		for (int i = 1; i < this->network.size(); i++)
 		{
-			for (int j = 0; j < this->network[i].size(); j++)
-			{
-				Neuron* neuron = &this->network[i][j];
-				if (neuron->numAccInputDer > 0)
-				{
-					neuron->bias -= learningRate * neuron->accInputDer / (neuron->numAccInputDer + 0.0);
-					neuron->accInputDer = 0;
-					neuron->numAccInputDer = 0;
-				}
-
-				for (int g = 0; g < neuron->inputs.size(); g++)
-				{
-					NeuralLink *neuralLink = neuron->inputs[g];
-					double regulDer = neuralLink->regularization->dfdx(neuralLink->weight);
-					if (neuralLink->numAccError > 0)
-					{
-						neuralLink->weight -= learningRate * (neuralLink->accErrorDer + regularizationRate * regulDer) / (neuralLink->numAccError + 0.0);
-						neuralLink->accErrorDer = 0;
-						neuralLink->numAccError = 0;
-					}
-				}
-
-			}
+			this->network[i].updateWeights(learningRate, regularizationRate);
 		}
 	}
 

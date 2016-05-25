@@ -26,7 +26,7 @@ namespace nncpp {
 		double update();
 
 		string toString();
-		
+		void updateWeights(double learningRate, double regularizationRate);
 	};
 
 }

@@ -118,6 +118,7 @@ void doSGDOnMnist(NeuralNetwork &myNet, MNIST &mnist)
 			if (lastPercentage < res / 12600.0)
 			{
 				ofstream fout("network.txt");
+				fout << res / 12600.0 << endl;
 				fout << myNet.toString();
 				fout.close();
 				lastPercentage = res / 12600.0;
