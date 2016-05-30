@@ -27,12 +27,6 @@ namespace nncpp {
 		virtual double dfdx(double x);
 	};
 
-	class softmax : public mathFunction {
-	public:
-		string name = "softmax";
-		virtual vector<double> f(vector<double> &x);
-		virtual vector<double> dfdx(vector<double> &x);
-	};
 
 	class Activations {
 	public:

@@ -119,13 +119,12 @@ void doSGDOnMnist(NeuralNetwork &myNet, MNIST &mnist)
 
 	for (int i = 0; i < 1000*294; i++)
 	{
-
 		for (int j = 0; j < 100; j++)
 		{
 			myNet.forwardProp(mnist.images[j + curIterationNum * 100]);
 			myNet.backwardProp(mnist.labels[j + curIterationNum * 100], ErrorFunctions::SQUARE);
 		}
-
+		
 		curIterationNum++;
 		curIterationNum %= 294;
 
@@ -199,9 +198,14 @@ int main()
 	else
 		mnist = MNIST("./train.csv", 42000);
 
-	vector<int> shape{ 784, 28, 10 };
+	//vector<int> shape{ 784, 28, 10 };
+	//NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
-	NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
+	NeuralNetwork myNet({
+							NeuralLayer(784, Activations::SIGMOID, Regularizations::L2, false),
+							NeuralLayer(28, Activations::SIGMOID, Regularizations::L2, false),
+							NeuralLayer(10, Activations::SIGMOID, Regularizations::L2, true),
+						});
 
 	//ofstream fout("network.txt");
 	//fout << myNet.toString();

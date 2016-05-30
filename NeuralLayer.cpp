@@ -1,7 +1,20 @@
 #include "NeuralLayer.h"
+#include <iostream>
+using namespace std;
 
 namespace nncpp {
 	NeuralLayer::NeuralLayer() {
+
+	}
+
+	NeuralLayer::NeuralLayer(const NeuralLayer &b)
+	{
+		this->activation = b.activation;
+		this->regularization = b.regularization;
+		this->isSoftmax = b.isSoftmax;
+		this->neurons = vector<Neuron>(b.neurons.size());
+		for (int i = 0; i < this->neurons.size(); i++)
+			this->neurons[i] = b.neurons[i];
 
 	}
 
@@ -19,6 +32,7 @@ namespace nncpp {
 
 	void NeuralLayer::update()
 	{
+		
 		int i;
 		if (this->isSoftmax)
 		{
@@ -82,5 +96,10 @@ namespace nncpp {
 				this->neurons[j].inputs.push_back(link);
 			}
 		}
+	}
+
+	NeuralLayer* NeuralLayer::clone() const
+	{
+		return new NeuralLayer(*this);
 	}
 }

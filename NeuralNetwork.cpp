@@ -4,10 +4,11 @@ namespace nncpp {
 
 	NeuralNetwork::NeuralNetwork(std::initializer_list<NeuralLayer> args)
 	{
+		int i;
 		for (NeuralLayer elem : args)
-		{
 			this->network.push_back(elem);
-		}
+		for (i = 1; i < this->network.size(); i++)
+			this->network[i].link(this->network[i - 1]);
 	}
 
 	NeuralNetwork::NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, bool isSoftmax)
@@ -43,13 +44,12 @@ namespace nncpp {
 	vector<double> NeuralNetwork::forwardProp(vector<double> &inputs)
 	{
 		int i, j;
-
 		for (i = 0; i < this->network[0].size(); i++)
-			this->network[0][i].output = inputs[i];
-
+			this->network[0][i].output = inputs[i];		
 		for (i = 1; i < this->network.size(); i++)
 			this->network[i].update();
 
+		
 		//return this->network[this->network.size() - 1][0].output;
 		return this->network[this->network.size() - 1].toVector();
 	}
@@ -104,9 +104,7 @@ namespace nncpp {
 					neuron->outputDer += neuron->outputs[g]->weight * neuron->outputs[g]->dest->inputDer;
 				}
 			}
-		}
-
-		
+		}		
 	}
 
 	void NeuralNetwork::updateWeights(double learningRate, double regularizationRate)

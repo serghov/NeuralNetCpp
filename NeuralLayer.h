@@ -10,6 +10,7 @@ namespace nncpp {
 		vector<Neuron> neurons;
 		mathFunction *activation;
 		NeuralLayer();
+		NeuralLayer(const NeuralLayer &b);
 		NeuralLayer(int size, mathFunction *activation, mathFunction *regularization, bool isSoftmax);
 		void update();
 		int size();
@@ -18,6 +19,7 @@ namespace nncpp {
 		string toString();
 		void updateWeights(double learningRate, double regularizationRate);
 		void link(NeuralLayer& prev);
+		NeuralLayer* clone() const;
 	};
 }
 
