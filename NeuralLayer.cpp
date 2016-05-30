@@ -5,7 +5,7 @@ namespace nncpp {
 
 	}
 
-	NeuralLayer::NeuralLayer(int size, mathFunction *activation, bool isSoftmax)
+	NeuralLayer::NeuralLayer(int size, mathFunction *activation, mathFunction *regularization, bool isSoftmax)
 	{
 		this->neurons = vector<Neuron>(size);
 		this->activation = activation;
@@ -14,6 +14,7 @@ namespace nncpp {
 			this->neurons[i] = Neuron(std::to_string(i), activation);
 		}
 		this->isSoftmax = isSoftmax;
+		this->regularization = regularization;
 	}
 
 	void NeuralLayer::update()
@@ -69,4 +70,17 @@ namespace nncpp {
 			this->neurons[i].updateWeights(learningRate, regularizationRate);
 	}
 
+	void NeuralLayer::link(NeuralLayer &prev)
+	{
+		int i, j;
+		for (i = 0; i < prev.size(); i++)
+		{
+			for (j = 0; j < this->size(); j++)
+			{
+				NeuralLink *link = new NeuralLink(&prev[i], &this->neurons[j], this->regularization);
+				prev[i].outputs.push_back(link);
+				this->neurons[j].inputs.push_back(link);
+			}
+		}
+	}
 }

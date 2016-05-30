@@ -16,7 +16,7 @@ namespace nncpp {
 	class NeuralNetwork {
 	public:
 		vector<NeuralLayer> network;
-
+		NeuralNetwork(std::initializer_list<NeuralLayer> args);
 		NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, bool isSoftmax);// change the constructor to layer per layer type at some point
 		vector<double> forwardProp(vector<double> &inputs);
 		void backwardProp(double target, mathFunction* errorFunction);

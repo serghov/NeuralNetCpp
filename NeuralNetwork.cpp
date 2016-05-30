@@ -1,6 +1,15 @@
 #include "NeuralNetwork.h"
 
 namespace nncpp {
+
+	NeuralNetwork::NeuralNetwork(std::initializer_list<NeuralLayer> args)
+	{
+		for (NeuralLayer elem : args)
+		{
+			this->network.push_back(elem);
+		}
+	}
+
 	NeuralNetwork::NeuralNetwork(vector<int> shape, mathFunction* activation, mathFunction* outputActivation, mathFunction* regularization, bool isSoftmax)
 	{
 		this->network = vector<NeuralLayer>(shape.size());
@@ -10,13 +19,14 @@ namespace nncpp {
 		for (int i = 0; i < shape.size(); i++)
 		{
 			if (i == shape.size() - 1)
-				this->network[i] = NeuralLayer(shape[i], outputActivation, isSoftmax);
+				this->network[i] = NeuralLayer(shape[i], outputActivation, regularization, isSoftmax);
 			else
-				this->network[i] = NeuralLayer(shape[i], activation, false);
+				this->network[i] = NeuralLayer(shape[i], activation, regularization, false);
 
-			for (int j = 0; j < this->network[i].size(); j++)
+			if (i)
 			{
-				if (i)
+				this->network[i].link(this->network[i - 1]);
+				/*for (int j = 0; j < this->network[i].size(); j++)
 				{
 					for (int g = 0; g < this->network[i - 1].size(); g++)
 					{
@@ -24,7 +34,7 @@ namespace nncpp {
 						this->network[i - 1][g].outputs.push_back(link);
 						this->network[i][j].inputs.push_back(link);
 					}
-				}
+				}*/
 			}
 		}
 	}
