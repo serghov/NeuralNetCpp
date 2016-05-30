@@ -57,13 +57,12 @@ namespace nncpp {
 	void NeuralNetwork::backwardProp(double target, mathFunction* errorFunction)
 	{
 		int i, j;
-		for (i = 0; i < this->network[this->network.size() - 1].size(); i++)
-		{
-			if (this->network[this->network.size() - 1].isSoftmax)
-				this->network[this->network.size() - 1][i].outputDer = this->network[this->network.size() - 1][i].output - (double)(i == (int)target);
-			else
-				this->network[this->network.size() - 1][i].outputDer = errorFunction->dfdx(this->network[this->network.size() - 1][i].output, target);//make the function accept a vector as target
-		}
+
+		if (!this->network[this->network.size() - 1].isSoftmax)
+			for (i = 0; i < this->network[this->network.size() - 1].size(); i++)
+			{
+					this->network[this->network.size() - 1][i].outputDer = errorFunction->dfdx(this->network[this->network.size() - 1][i].output, target);//make the function accept a vector as target
+			}
 
 
 		for (i = this->network.size() - 1; i > 0; i--)
@@ -72,8 +71,8 @@ namespace nncpp {
 			{
 				Neuron* neuron = &this->network[i][j];
 
-				if (this->network[this->network.size() - 1].isSoftmax && i == this->network.size() - 1)
-					neuron->inputDer = neuron->outputDer;	
+				if (this->network[i].isSoftmax)
+					neuron->inputDer = this->network[i][j].output - (double)(j == (int)target);
 				else
 					neuron->inputDer = neuron->outputDer * neuron->activation->dfdx(neuron->totalInput);
 
