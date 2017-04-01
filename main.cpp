@@ -196,15 +196,15 @@ int main()
 	if (fileExists("mnistdump"))
 		mnist.readDumpFile("mnistdump");
 	else
-		mnist = MNIST("./train.csv", 42000);
+		mnist = MNIST("../train.csv", 42000);
 
 	//vector<int> shape{ 784, 28, 10 };
 	//NeuralNetwork myNet(shape, Activations::SIGMOID, Activations::SIGMOID, Regularizations::L2, true);
 
 	NeuralNetwork myNet({
-							NeuralLayer(784, Activations::SIGMOID, Regularizations::L2, false),
-							NeuralLayer(28, Activations::SIGMOID, Regularizations::L2, false),
-							NeuralLayer(10, Activations::SIGMOID, Regularizations::L2, true),
+							NeuralLayer(784, Activations::RELU, Regularizations::L2, false),
+							NeuralLayer(28, Activations::RELU, Regularizations::L2, false),
+							NeuralLayer(10, Activations::RELU, Regularizations::L2, true),
 						});
 
 	//ofstream fout("network.txt");
